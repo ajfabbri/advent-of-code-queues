@@ -42,6 +42,10 @@ class TestOrderQueues {
                     // Small sleep to simulate computation, etc.
                     java.lang.Thread.sleep(0, 20 /* usec */);
                     Order order = queue.consumeOrder();
+                    if (order == null) {
+                        // Queue is empty, wait for more orders to arrive
+                        continue;
+                    }
                     numOrders++;
                     if (numOrders == NUM_PRODUCERS * ORDERS_PER_PRODUCER) {
                         break;
@@ -101,7 +105,6 @@ class TestOrderQueues {
         } catch (java.util.concurrent.ExecutionException e) {
             fail("Consumer threw exception: " + e.getCause().getMessage());
         }
-
     }
 }
 
