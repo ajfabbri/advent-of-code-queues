@@ -11,9 +11,9 @@ public class InMemoryQueue2 implements OrderQueue {
 
     int capacity;
     ArrayDeque<Order> orders = new ArrayDeque<Order>();
+    // See pthread_mutex_t and pthread_cond_t for underlying libc implementation.
     // Would be nice if java had a non-reentrant lock.
     final Lock lock = new ReentrantLock();
-    // See pthread_mutex and pthread_cond_t for underlying libc implementation.
     Condition waitFull = lock.newCondition();
     Condition waitEmpty = lock.newCondition();
 
