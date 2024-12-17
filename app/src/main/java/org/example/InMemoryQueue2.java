@@ -31,18 +31,14 @@ public class InMemoryQueue2 implements OrderQueue {
     }
 
     @Override
-    public void createOrder(Order order) throws OrderError {
+    public void createOrder(Order order) throws OrderError, InterruptedException {
         // TODO validate order
 
         lock.lock();
         try {
             while (orders.size() >= capacity) {
-                try {
-                    // Needs to be in a loop to protect against spurious wakeups.
-                    waitFull.await();
-                } catch (InterruptedException e) {
-                    throw new ThreadInterrupted();
-                }
+                // Needs to be in a loop to protect against spurious wakeups.
+                waitFull.await();
             }
             orders.addLast(order);
             // Use singular signal to avoid thundering herd contention.
@@ -55,15 +51,11 @@ public class InMemoryQueue2 implements OrderQueue {
     // This differs from `InMemoryQueue` in that we block on consumer side (empty)
     // as well. In real life we'd want consistent behavior. This is just a demo.
     @Override
-    public Order consumeOrder() throws OrderError {
+    public Order consumeOrder() throws OrderError, InterruptedException {
         lock.lock();
         try {
             while (orders.isEmpty()) {
-                try {
-                    waitEmpty.await();
-                } catch (InterruptedException e) {
-                    throw new ThreadInterrupted();
-                }
+                waitEmpty.await();
             }
             Order order = orders.removeFirst();
             // Use singular signal to avoid thundering herd contention.

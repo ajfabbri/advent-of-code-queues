@@ -4,7 +4,7 @@ public interface OrderQueue {
 
     public record Order(String customerId, String gameName, GameType gameType) {}
 
-    void createOrder(Order order) throws OrderError;
+    void createOrder(Order order) throws OrderError, InterruptedException;
 
-    Order consumeOrder() throws OrderError;
+    Order consumeOrder() throws OrderError, InterruptedException;
 }

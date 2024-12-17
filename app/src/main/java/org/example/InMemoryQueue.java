@@ -27,14 +27,10 @@ public class InMemoryQueue implements OrderQueue {
     }
 
     @Override
-    public void createOrder(Order order) throws OrderError {
+    public void createOrder(Order order) throws OrderError, InterruptedException {
         // TODO validate order
 
-        try {
-            queuePermits.acquire();
-        } catch (InterruptedException e) {
-            throw new ThreadInterrupted();
-        }
+        queuePermits.acquire();
         // Counting semaphore with capacity > 1 doesn't give us mutual exclusion, so we
         // need a synchronized block for safe concurrent access to underlying data
         // structure.
