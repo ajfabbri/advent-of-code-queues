@@ -30,8 +30,8 @@ public class InMemoryQueue2 implements OrderQueue {
         capacity = maxOutstanding;
     }
 
-	@Override
-	public void createOrder(Order order) throws OrderError {
+    @Override
+    public void createOrder(Order order) throws OrderError {
         // TODO validate order
 
         lock.lock();
@@ -50,12 +50,12 @@ public class InMemoryQueue2 implements OrderQueue {
         } finally {
             lock.unlock();
         }
-	}
+    }
 
     // This differs from `InMemoryQueue` in that we block on consumer side (empty)
     // as well. In real life we'd want consistent behavior. This is just a demo.
-	@Override
-	public Order consumeOrder() throws OrderError {
+    @Override
+    public Order consumeOrder() throws OrderError {
         lock.lock();
         try {
             while (orders.isEmpty()) {
@@ -72,6 +72,5 @@ public class InMemoryQueue2 implements OrderQueue {
         } finally {
             lock.unlock();
         }
-	}
+    }
 }
-
