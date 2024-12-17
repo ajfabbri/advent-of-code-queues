@@ -15,7 +15,7 @@ Two implementations:
 1. Using a semaphore to enforce capacity / blocking: [InMemoryQueue.java](app/src/main/java/org/example/InMemoryQueue.java).
 2. Using a lock and condition variable instead: [InMemoryQueue2.java](app/src/main/java/org/example/InMemoryQueue2.java).
 
-Note that the implementations differ in that #2 does not block consumer when
+Note that the implementations differ in that #1 does not block consumer when
 the queue is empty; it has to poll and try again.
 
 ## Test Output
